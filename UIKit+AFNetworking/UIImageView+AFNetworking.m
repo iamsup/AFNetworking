@@ -128,16 +128,12 @@
                            if (success) {
                                success(request, response, responseObject);
                            } else if(responseObject) {
-                               [strongSelf setAlpha:0];
                                strongSelf.image = responseObject;
-                               if (animation) {
-                                   [UIView animateWithDuration:0.3f
-                                                    animations:^{
-                                                        [strongSelf setAlpha:1];
-                                                    }
-                                                    completion:^(BOOL finished) {
-                                                    }];
-                               }
+                               CATransition *transition = [CATransition animation];
+                               transition.type = kCATransitionFade; // there are other types but this is the nicest
+                               transition.duration = 0.34; // set the duration that you like
+                               transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                               [self.layer addAnimation:transition forKey:nil];
                            }
                            [strongSelf clearActiveDownloadInformation];
                        }
