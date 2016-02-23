@@ -68,14 +68,21 @@
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
 {
+    [self setImageWithURL:url placeholderImage:placeholderImage withAnimation:NO];
+}
+
+- (void)setImageWithURL:(NSURL *)url
+       placeholderImage:(UIImage *)placeholderImage
+          withAnimation:(BOOL)animation
+{
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-
-    [self setImageWithURLRequest:request placeholderImage:placeholderImage success:nil failure:nil];
+    [self setImageWithURLRequest:request placeholderImage:placeholderImage withAnimation:animation success:nil failure:nil];
 }
 
 - (void)setImageWithURLRequest:(NSURLRequest *)urlRequest
               placeholderImage:(UIImage *)placeholderImage
+                 withAnimation:(BOOL)animation
                        success:(void (^)(NSURLRequest *request, NSHTTPURLResponse * _Nullable response, UIImage *image))success
                        failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse * _Nullable response, NSError *error))failure
 {
@@ -121,7 +128,16 @@
                            if (success) {
                                success(request, response, responseObject);
                            } else if(responseObject) {
+                               [strongSelf setAlpha:0];
                                strongSelf.image = responseObject;
+                               if (animation) {
+                                   [UIView animateWithDuration:0.3f
+                                                    animations:^{
+                                                        [strongSelf setAlpha:1];
+                                                    }
+                                                    completion:^(BOOL finished) {
+                                                    }];
+                               }
                            }
                            [strongSelf clearActiveDownloadInformation];
                        }
