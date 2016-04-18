@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (void)setImageWithURL:(NSURL *)url
-       placeholderImage:(UIImage *)placeholderImage
+       placeholderImage:(nullable UIImage *)placeholderImage
           withAnimation:(BOOL)animation;
 
 /**
