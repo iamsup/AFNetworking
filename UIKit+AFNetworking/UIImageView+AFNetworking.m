@@ -75,9 +75,6 @@
        placeholderImage:(UIImage *)placeholderImage
           withAnimation:(BOOL)animation
 {
-    if (!url) {
-        return;
-    }
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self setImageWithURLRequest:request placeholderImage:placeholderImage withAnimation:animation success:nil failure:nil];
